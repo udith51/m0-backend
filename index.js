@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const allRoutes = require('./routes/all');
+const companyRoutes = require('./routes/company');
 
 dotenv.config();
 mongoose
@@ -17,10 +19,13 @@ mongoose
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
-app.use(morgan('common'))
+app.use(morgan('common'));
+
+app.use('/', allRoutes);
+app.use('/company', companyRoutes);
 
 app.get('/', (req, res) => {
-    res.send("Welcome M0");
+    console.log("Welcome M0! You are not much away from success:)");
 })
 
 app.listen(8000, () => {
