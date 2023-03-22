@@ -6,10 +6,11 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const allRoutes = require('./routes/all');
 const companyRoutes = require('./routes/company');
+const contractorRoutes = require('./routes/contractor')
 
 dotenv.config();
 mongoose
-    .connect(process.env.MONGO_URL)
+    .connect(process.env.MONGO_TEMP_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected with database");
     })
@@ -23,11 +24,12 @@ app.use(morgan('common'));
 
 app.use('/', allRoutes);
 app.use('/company', companyRoutes);
+app.use('/contractor', contractorRoutes);
 
 app.get('/', (req, res) => {
-    console.log("Welcome M0! You are not much away from success:)");
+    res.send("Welcome M0! You are not much away from success:)");
 })
 
-app.listen(8000, () => {
+app.listen(8800, () => {
     console.log("Server up and running!");
 })
