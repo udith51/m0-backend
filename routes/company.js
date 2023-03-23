@@ -69,6 +69,34 @@ router.post('/link/:id', async (req, res) => {
     }
 })
 
-
+router.post('/bank', async (req, res) => {
+    const { acc_id, id, acc, route, acc_name } = req.body;
+    try {
+        const resp = await axios({
+            method: 'POST',
+            url: 'https://api-sandbox.orum.io/momentum/external/accounts',
+            headers: {
+                'accept': 'application/json',
+                'x-api-key': process.env.ORUM_API,
+                'orum-version': process.env.ORUM_VERSION,
+                'content-type': 'application/json',
+                'authorization': `Bearer ${process.env.ORUM_TOKEN}`
+            },
+            data: {
+                account_reference_id: acc_id,
+                customer_reference_id: id,
+                customer_resource_type: 'business',
+                account_type: 'checking',
+                account_number: acc,
+                routing_number: route,
+                account_holder_name: acc_name
+            }
+        });
+        console.log(resp.data);
+        res.send("Company bank account linked").status(200);
+    } catch (e) {
+        res.send(e).status(500);
+    }
+})
 
 module.exports = router;
